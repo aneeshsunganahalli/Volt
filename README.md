@@ -25,6 +25,7 @@ A smart finance and expense tracker that helps you manage your finances with int
 ### Additional Tools
 - **Uvicorn**: ASGI server for running FastAPI
 - **JWT**: Secure token-based authentication
+- **Docker**: Containerization for consistent development and deployment environments
 
 ## Project Structure
 
@@ -88,6 +89,28 @@ volt/
    ```
 
    The API will be available at `http://localhost:8000`
+
+### Docker Setup
+
+You can run the application using Docker for a consistent environment:
+
+1. Ensure Docker and Docker Compose are installed on your system
+
+2. From the server directory, build and run the containers:
+   ```bash
+   docker-compose up --build
+   ```
+
+   This will:
+   - Start the FastAPI backend server
+   - Start the PostgreSQL database
+   - Run database migrations
+   - Expose the API at `http://localhost:8000`
+
+3. To stop the containers:
+   ```bash
+   docker-compose down
+   ```
 
 ### Mobile Setup
 
