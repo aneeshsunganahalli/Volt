@@ -1,6 +1,8 @@
+from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
+    model_config = ConfigDict(env_file=".env")
     app_name: str
     database_url: str
     secret_key: str
@@ -29,8 +31,5 @@ class Settings(BaseSettings):
     def redis_url(self) -> str:
         """Construct Redis URL from components"""
         return f"redis://{self.redis_host}:{self.redis_port}/{self.redis_db}"
-    
-    class Config:
-        env_file = ".env"
 
 settings = Settings()

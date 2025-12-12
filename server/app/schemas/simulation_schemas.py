@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 from typing import Optional, Literal
 from datetime import datetime
 from decimal import Decimal
@@ -16,6 +16,8 @@ class CategoryStats(BaseModel):
 
 class BehaviourModelResponse(BaseModel):
     """Response schema for behavior model"""
+    model_config = ConfigDict(from_attributes=True)
+    
     id: int
     user_id: int
     category_stats: dict
@@ -24,9 +26,6 @@ class BehaviourModelResponse(BaseModel):
     impulse_score: float = Field(ge=0, le=1)
     transaction_count: int = Field(ge=0)
     last_updated: datetime
-    
-    class Config:
-        from_attributes = True
 
 
 class SimulationRequest(BaseModel):

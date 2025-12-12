@@ -24,7 +24,7 @@ def create_test_user(db):
             email="test@simulation.com",
             name="Test User",
             phone_number="+1234567890",
-            hashed_password="hashed_dummy_password"
+            hashed_password="$argon2id$v=19$m=65536,t=3,p=4$jSoUCTrHVb5w7vgRzBDxQA$VcVPNrHB0zqV+LnnrL6+oekGNi2r8WmTOOj1+PT/gUg"
         )
         db.add(user)
         db.commit()

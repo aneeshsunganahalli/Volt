@@ -75,12 +75,21 @@ class BehaviorEngine:
         elasticity = model.elasticity or {}
         baselines = model.baselines or {}
         
-        # Apply time decay to existing stats
-        if category in stats:
-            stats[category] = self.stats_service.apply_time_decay(
-                stats[category], 
-                DECAY_FACTOR
-            )
+        # Apply time decay to existing stats (only if more than 7 days have passed)
+        # This prevents decay from being applied on every transaction
+        if category in stats and model.last_updated:
+            try:
+                last_updated_utc = ensure_utc(model.last_updated)
+                days_since_update = (utc_now() - last_updated_utc).days
+                if days_since_update >= 7:
+                    # Apply decay once per week
+                    stats[category] = self.stats_service.apply_time_decay(
+                        stats[category], 
+                        DECAY_FACTOR
+                    )
+            except (TypeError, AttributeError):
+                # Skip decay if datetime comparison fails
+                pass
         
         # Update statistics
         if category not in stats:
