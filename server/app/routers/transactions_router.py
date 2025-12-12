@@ -37,23 +37,16 @@ async def create_transaction(
             detail="Not authorized to create transaction for another user"
         )
     
-    try:
-        # Create transaction
-        new_transaction = Transaction(**transaction.model_dump())
-        db.add(new_transaction)
-        db.commit()
-        db.refresh(new_transaction)
-        
-        # Update behavior model with AI categorization
-        await behavior_engine.update_model(db, new_transaction.user_id, new_transaction)
-        
-        return new_transaction
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to create transaction: {str(e)}"
-        )
+    # Create transaction
+    new_transaction = Transaction(**transaction.model_dump())
+    db.add(new_transaction)
+    db.commit()
+    db.refresh(new_transaction)
+    
+    # Update behavior model with AI categorization
+    await behavior_engine.update_model(db, new_transaction.user_id, new_transaction)
+    
+    return new_transaction
 
 
 @router.post("/bulk", response_model=List[TransactionResponse], status_code=status.HTTP_201_CREATED)
@@ -71,27 +64,20 @@ async def create_multiple_transactions(
                 detail="Not authorized to create transactions for another user"
             )
     
-    try:
-        # Create all transactions
-        new_transactions = [Transaction(**t.model_dump()) for t in transactions]
-        db.add_all(new_transactions)
-        db.commit()
-        
-        # Refresh all to get IDs and created_at
-        for t in new_transactions:
-            db.refresh(t)
-        
-        # Update behavior model for each transaction
-        for t in new_transactions:
-            await behavior_engine.update_model(db, t.user_id, t)
-        
-        return new_transactions
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to create transactions: {str(e)}"
-        )
+    # Create all transactions
+    new_transactions = [Transaction(**t.model_dump()) for t in transactions]
+    db.add_all(new_transactions)
+    db.commit()
+    
+    # Refresh all to get IDs and created_at
+    for t in new_transactions:
+        db.refresh(t)
+    
+    # Update behavior model for each transaction
+    for t in new_transactions:
+        await behavior_engine.update_model(db, t.user_id, t)
+    
+    return new_transactions
 
 
 @router.get("/", response_model=List[TransactionResponse])
