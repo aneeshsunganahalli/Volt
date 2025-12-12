@@ -16,3 +16,4 @@ class User(Base):
     # Relationships
     transactions = relationship("Transaction", back_populates="user")
     behaviour_model = relationship("BehaviourModel", back_populates="user", uselist=False)
+    goals = relationship("Goal", back_populates="user")
