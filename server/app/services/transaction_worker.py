@@ -11,6 +11,8 @@ from sqlalchemy.orm import Session
 from app.services.job_queue import JobQueue, Worker
 from app.database import SessionLocal
 from app.models.transactions import Transaction
+from app.services.goal_service import GoalService
+import asyncio
 
 logging.basicConfig(
     level=logging.INFO,
@@ -130,6 +132,16 @@ class TransactionWorker:
             db.refresh(transaction)
             
             logger.info(f"Successfully inserted transaction ID: {transaction.id} for user {user_id}")
+            
+            # Process transaction for active goals
+            try:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(GoalService.process_transaction_for_goals(db, transaction))
+                loop.close()
+            except Exception as e:
+                logger.error(f"Error processing transaction {transaction.id} for goals: {str(e)}")
+                # Don't fail the transaction creation
             
             return {
                 "status": "success",
