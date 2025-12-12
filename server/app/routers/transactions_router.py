@@ -13,6 +13,7 @@ from app.oauth2 import get_current_user
 from app.schemas.transaction_schemas import TransactionCreate, TransactionResponse
 from app.services.behavior_engine import BehaviorEngine
 from app.services.categorization import CategorizationService
+from app.services.goal_service import GoalService
 
 router = APIRouter(prefix="/transactions", tags=["Transactions"])
 
@@ -53,6 +54,13 @@ async def create_transaction(
     # Update behavior model with AI categorization
     await behavior_engine.update_model(db, new_transaction.user_id, new_transaction)
     
+    # Process transaction for active goals
+    try:
+        await GoalService.process_transaction_for_goals(db, new_transaction)
+    except Exception as e:
+        # Log error but don't fail transaction creation
+        print(f"Error processing transaction {new_transaction.id} for goals: {str(e)}")
+    
     return new_transaction
 
 
@@ -91,6 +99,14 @@ async def create_multiple_transactions(
     # Update behavior model for each transaction
     for t in new_transactions:
         await behavior_engine.update_model(db, t.user_id, t)
+    
+    # Process transactions for active goals
+    for t in new_transactions:
+        try:
+            await GoalService.process_transaction_for_goals(db, t)
+        except Exception as e:
+            # Log error but don't fail transaction creation
+            print(f"Error processing transaction {t.id} for goals: {str(e)}")
     
     return new_transactions
 
