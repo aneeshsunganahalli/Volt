@@ -29,6 +29,15 @@ class StatisticsService:
         variance = m2 / n if n > 1 else 0.0
         std_dev = math.sqrt(variance)
         
+        # Handle min/max initialization for first value
+        # If this is the first value (n==1), use new_amount for both min and max
+        if n == 1:
+            result_min = new_amount
+            result_max = new_amount
+        else:
+            result_min = min(stats.get("min", new_amount), new_amount)
+            result_max = max(stats.get("max", new_amount), new_amount)
+        
         return {
             "count": n,
             "sum": stats.get("sum", 0.0) + new_amount,
@@ -36,8 +45,8 @@ class StatisticsService:
             "variance": variance,
             "std_dev": std_dev,
             "m2": m2,
-            "min": min(stats.get("min", new_amount), new_amount),
-            "max": max(stats.get("max", new_amount), new_amount)
+            "min": result_min,
+            "max": result_max
         }
     
     @staticmethod
@@ -227,7 +236,7 @@ class StatisticsService:
             diversity_level = "low"
         
         # Income stability assessment
-        if volatility < 0.2:
+        if volatility <= 0.2:
             stability = "stable"
         elif volatility < 0.4:
             stability = "moderately_variable"
