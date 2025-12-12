@@ -21,8 +21,6 @@ class GoalService:
             title=goal_data.title,
             description=goal_data.description,
             target_amount=goal_data.target_amount,
-            debit_contribution_rate=goal_data.debit_contribution_rate,
-            credit_contribution_rate=goal_data.credit_contribution_rate,
             end_date=goal_data.end_date,
             current_amount=Decimal('0.00'),
             is_active=True,
@@ -83,8 +81,9 @@ class GoalService:
     @staticmethod
     async def process_transaction_for_goals(db: Session, transaction: Transaction) -> List[GoalContribution]:
         """
-        Process a transaction and contribute to active goals based on contribution rates.
-        Called whenever a new transaction is created.
+        Process a transaction and update active goals.
+        Credits add to savings, debits subtract from savings.
+        Savings = Total Credits - Total Debits
         """
         if not transaction.amount or not transaction.type:
             return []
@@ -98,37 +97,36 @@ class GoalService:
         contributions = []
         
         for goal in active_goals:
-            # Skip if goal is already achieved
-            if goal.is_achieved:
-                continue
+            # Calculate amount to add/subtract based on transaction type
+            amount_change = Decimal('0.00')
             
-            # Calculate contribution based on transaction type
-            contribution_amount = Decimal('0.00')
+            if transaction.type.lower() == "credit":
+                # Credits add to savings
+                amount_change = transaction.amount
+            elif transaction.type.lower() == "debit":
+                # Debits subtract from savings (stored as negative)
+                amount_change = -transaction.amount
             
-            if transaction.type.lower() == "debit":
-                # For debits, save a percentage (encouraging saving when spending)
-                contribution_amount = (transaction.amount * goal.debit_contribution_rate) / Decimal('100')
-            elif transaction.type.lower() == "credit":
-                # For credits, save a percentage (saving from income)
-                contribution_amount = (transaction.amount * goal.credit_contribution_rate) / Decimal('100')
-            
-            if contribution_amount > 0:
+            if amount_change != 0:
                 # Create contribution record
                 contribution = GoalContribution(
                     goal_id=goal.id,
                     transaction_id=transaction.id,
-                    amount=contribution_amount,
-                    contribution_type=transaction.type
+                    amount=amount_change
                 )
                 db.add(contribution)
                 
-                # Update goal's current amount
-                goal.current_amount += contribution_amount
+                # Update goal's current amount (can be negative if debits > credits)
+                goal.current_amount += amount_change
                 
-                # Check if goal is achieved
-                if goal.current_amount >= goal.target_amount:
+                # Check if goal is achieved (only if positive and reached target)
+                if goal.current_amount >= goal.target_amount and not goal.is_achieved:
                     goal.is_achieved = True
                     logger.info(f"Goal {goal.id} '{goal.title}' achieved for user {transaction.user_id}!")
+                elif goal.current_amount < goal.target_amount and goal.is_achieved:
+                    # If amount drops below target, mark as not achieved
+                    goal.is_achieved = False
+                    logger.info(f"Goal {goal.id} '{goal.title}' no longer achieved for user {transaction.user_id}")
                 
                 contributions.append(contribution)
         
@@ -143,9 +141,10 @@ class GoalService:
         """Calculate progress metrics for a goal"""
         now = datetime.now(timezone.utc)
         
-        # Calculate progress percentage
+        # Calculate progress percentage (can be negative if debits > credits)
         progress_percentage = float((goal.current_amount / goal.target_amount) * 100) if goal.target_amount > 0 else 0
-        progress_percentage = min(progress_percentage, 100.0)  # Cap at 100%
+        # Don't cap at 100% to show if exceeded, but cap negative at -100%
+        progress_percentage = max(progress_percentage, -100.0)
         
         # Calculate days remaining
         days_remaining = (goal.end_date - now).days

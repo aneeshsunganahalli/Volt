@@ -13,13 +13,8 @@ class Goal(Base):
     title = Column(String, nullable=False)
     description = Column(String, nullable=True)
     target_amount = Column(Numeric(14, 2), nullable=False)
-    current_amount = Column(Numeric(14, 2), default=0.00, nullable=False)
+    current_amount = Column(Numeric(14, 2), default=0.00, nullable=False)  # Savings = Credits - Debits
     
-    # Contribution rates (percentage of transaction to contribute)
-    debit_contribution_rate = Column(Numeric(5, 2), default=10.00, nullable=False)  # % of debits to save
-    credit_contribution_rate = Column(Numeric(5, 2), default=5.00, nullable=False)  # % of credits to save
-    
-    start_date = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     end_date = Column(DateTime(timezone=True), nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)  # Only active goals track transactions
     is_achieved = Column(Boolean, default=False, nullable=False)
@@ -40,8 +35,7 @@ class GoalContribution(Base):
     goal_id = Column(Integer, ForeignKey("goals.id"), nullable=False, index=True)
     transaction_id = Column(Integer, ForeignKey("transactions.id"), nullable=False, index=True)
     
-    amount = Column(Numeric(14, 2), nullable=False)  # Amount contributed
-    contribution_type = Column(String, nullable=False)  # "debit" or "credit"
+    amount = Column(Numeric(14, 2), nullable=False)  # Transaction amount (positive for credit, negative for debit)
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
