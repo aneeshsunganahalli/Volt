@@ -14,6 +14,8 @@ from app.schemas.transaction_schemas import TransactionCreate, TransactionRespon
 from app.services.behavior_engine import BehaviorEngine
 from app.services.categorization import CategorizationService
 from app.services.goal_service import GoalService
+from app.services.gamification_service import GamificationService
+from app.models.gamification import EventType
 
 router = APIRouter(prefix="/transactions", tags=["Transactions"])
 
@@ -50,6 +52,13 @@ async def create_transaction(
     
     db.commit()
     db.refresh(new_transaction)
+    
+    # Award gamification event for transaction import
+    try:
+        gamification = GamificationService(db)
+        gamification.award_event(current_user.id, EventType.TRANSACTION_IMPORTED)
+    except Exception as e:
+        print(f"Error awarding TRANSACTION_IMPORTED event: {str(e)}")
     
     # Update behavior model with AI categorization
     await behavior_engine.update_model(db, new_transaction.user_id, new_transaction)
@@ -95,6 +104,14 @@ async def create_multiple_transactions(
     # Refresh all to get IDs and created_at
     for t in new_transactions:
         db.refresh(t)
+    
+    # Award gamification event for bulk import
+    try:
+        gamification = GamificationService(db)
+        for _ in new_transactions:
+            gamification.award_event(current_user.id, EventType.TRANSACTION_IMPORTED)
+    except Exception as e:
+        print(f"Error awarding TRANSACTION_IMPORTED events: {str(e)}")
     
     # Update behavior model for each transaction
     for t in new_transactions:
@@ -203,6 +220,9 @@ async def update_transaction(
     elif transaction.type == "debit":
         current_user.savings += transaction.amount
     
+    # Track if category changed for gamification
+    category_changed = transaction.category != transaction_update.category
+    
     # Update transaction fields
     for key, value in transaction_update.model_dump().items():
         setattr(transaction, key, value)
@@ -215,6 +235,15 @@ async def update_transaction(
     
     db.commit()
     db.refresh(transaction)
+    
+    # Award gamification event for manual categorization
+    if category_changed and transaction_update.category:
+        try:
+            gamification = GamificationService(db)
+            gamification.award_event(current_user.id, EventType.TRANSACTION_CATEGORIZED)
+        except Exception as e:
+            print(f"Error awarding TRANSACTION_CATEGORIZED event: {str(e)}")
+    
     return transaction
 
 

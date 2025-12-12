@@ -5,6 +5,7 @@ from typing import List, Optional
 from app.models.goal import Goal, GoalContribution
 from app.models.transactions import Transaction
 from app.schemas.goal_schema import GoalCreate, GoalUpdate
+from app.models.gamification import EventType
 import logging
 
 logger = logging.getLogger(__name__)
@@ -29,6 +30,15 @@ class GoalService:
         db.add(goal)
         db.commit()
         db.refresh(goal)
+        
+        # Award gamification event
+        try:
+            from app.services.gamification_service import GamificationService
+            gamification = GamificationService(db)
+            gamification.award_event(user_id, EventType.GOAL_CREATED)
+        except Exception as e:
+            logger.warning(f"Failed to award GOAL_CREATED event: {e}")
+        
         return goal
     
     @staticmethod
@@ -120,13 +130,50 @@ class GoalService:
                 goal.current_amount += amount_change
                 
                 # Check if goal is achieved (only if positive and reached target)
+                was_achieved = goal.is_achieved
+                previous_percentage = float((goal.current_amount - amount_change) / goal.target_amount * 100) if goal.target_amount > 0 else 0
+                current_percentage = float(goal.current_amount / goal.target_amount * 100) if goal.target_amount > 0 else 0
+                
                 if goal.current_amount >= goal.target_amount and not goal.is_achieved:
                     goal.is_achieved = True
                     logger.info(f"Goal {goal.id} '{goal.title}' achieved for user {transaction.user_id}!")
+                    
+                    # Award goal completion event
+                    try:
+                        from app.services.gamification_service import GamificationService
+                        gamification = GamificationService(db)
+                        gamification.award_event(
+                            transaction.user_id, 
+                            EventType.GOAL_COMPLETED,
+                            metadata={"goal_id": goal.id, "goal_title": goal.title}
+                        )
+                    except Exception as e:
+                        logger.warning(f"Failed to award GOAL_COMPLETED event: {e}")
+                        
                 elif goal.current_amount < goal.target_amount and goal.is_achieved:
                     # If amount drops below target, mark as not achieved
                     goal.is_achieved = False
                     logger.info(f"Goal {goal.id} '{goal.title}' no longer achieved for user {transaction.user_id}")
+                
+                # Check for milestone achievements (25%, 50%, 75%)
+                if not was_achieved:
+                    milestones = [25, 50, 75]
+                    for milestone in milestones:
+                        if previous_percentage < milestone <= current_percentage:
+                            try:
+                                from app.services.gamification_service import GamificationService
+                                gamification = GamificationService(db)
+                                gamification.award_event(
+                                    transaction.user_id,
+                                    EventType.GOAL_MILESTONE_REACHED,
+                                    metadata={
+                                        "goal_id": goal.id,
+                                        "goal_title": goal.title,
+                                        "milestone_percentage": milestone
+                                    }
+                                )
+                            except Exception as e:
+                                logger.warning(f"Failed to award GOAL_MILESTONE_REACHED event: {e}")
                 
                 contributions.append(contribution)
         
