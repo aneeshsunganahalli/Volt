@@ -11,6 +11,9 @@ from sqlalchemy.orm import Session
 from app.services.job_queue import JobQueue, Worker
 from app.database import SessionLocal
 from app.models.transactions import Transaction
+from app.models.user import User  # Import User to resolve Transaction.user relationship
+from app.models.goal import Goal, GoalContribution  # Import Goal models for goal processing
+from app.models.behaviour import BehaviourModel  # Import BehaviourModel to resolve User.behaviour_model relationship
 from app.services.goal_service import GoalService
 import asyncio
 

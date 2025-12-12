@@ -4,12 +4,14 @@ Endpoints for managing email transaction processing
 """
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Annotated
 from pydantic import BaseModel
 from datetime import datetime
 
 from app.database import get_db
 from app.models.transactions import Transaction
+from app.models.user import User
+from app.oauth2 import get_current_user
 from app.services.job_queue import JobQueue
 from app.core.config import settings
 
@@ -39,7 +41,7 @@ class ManualEmailJob(BaseModel):
     sender: str
     subject: str
     body: str
-    user_id: int = 1
+    # Remove user_id - will use authenticated user
 
 
 class TransactionResponse(BaseModel):
@@ -85,6 +87,7 @@ async def get_job_status(job_id: str, queue: JobQueue = Depends(get_job_queue)):
 @router.post("/queue/manual", status_code=status.HTTP_201_CREATED)
 async def enqueue_manual_email(
     email_job: ManualEmailJob,
+    current_user: Annotated[User, Depends(get_current_user)],
     queue: JobQueue = Depends(get_job_queue)
 ):
     """
@@ -106,13 +109,15 @@ async def enqueue_manual_email(
             detail="Could not extract transaction data from email"
         )
     
-    # Enqueue job
+    # Enqueue job with authenticated user's ID
     job_data = {
         "transaction": transaction_data,
+        "user_id": current_user.id,  # Use authenticated user's ID
         "email_metadata": {
             "sender": email_job.sender,
             "subject": email_job.subject,
-            "date": datetime.utcnow().isoformat()
+            "date": datetime.utcnow().isoformat(),
+            "user_email": current_user.email
         }
     }
     
@@ -137,10 +142,18 @@ async def enqueue_manual_email(
 @router.get("/transactions/recent", response_model=List[TransactionResponse])
 async def get_recent_transactions(
     limit: int = 20,
+    current_user: Annotated[User, Depends(get_current_user)] = None,
     db: Session = Depends(get_db)
 ):
-    """Get recent transactions inserted from emails"""
+    """Get recent transactions inserted from emails for the current user"""
+    if current_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication required"
+        )
+    
     transactions = db.query(Transaction)\
+        .filter(Transaction.user_id == current_user.id)\
         .order_by(Transaction.created_at.desc())\
         .limit(limit)\
         .all()
@@ -152,11 +165,21 @@ async def get_recent_transactions(
 async def get_transactions_by_bank(
     bank_name: str,
     limit: int = 20,
+    current_user: Annotated[User, Depends(get_current_user)] = None,
     db: Session = Depends(get_db)
 ):
-    """Get transactions from a specific bank"""
+    """Get transactions from a specific bank for the current user"""
+    if current_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication required"
+        )
+    
     transactions = db.query(Transaction)\
-        .filter(Transaction.bankName.ilike(f"%{bank_name}%"))\
+        .filter(
+            Transaction.user_id == current_user.id,
+            Transaction.bankName.ilike(f"%{bank_name}%")
+        )\
         .order_by(Transaction.created_at.desc())\
         .limit(limit)\
         .all()

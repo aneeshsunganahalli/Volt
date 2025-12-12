@@ -14,6 +14,7 @@ from app.database import SessionLocal, Base, engine
 from app.models.user import User
 from app.models.transactions import Transaction as TransactionModel
 from app.models.behaviour import BehaviourModel
+from app.models.goal import Goal, GoalContribution  # Import Goal to resolve User.goals relationship
 
 # Import services
 from app.services.imap_poller import IMAPPoller
@@ -89,6 +90,9 @@ class MultiUserEmailPoller:
         """Process emails for a specific user and enqueue jobs"""
         logger.info(f"Processing {len(emails)} emails for user: {user.email}")
         
+        enqueued_count = 0
+        skipped_count = 0
+        
         for email_data in emails:
             try:
                 sender = email_data.get("sender", "")
@@ -119,16 +123,28 @@ class MultiUserEmailPoller:
                     )
                     
                     logger.info(
-                        f"Enqueued job {job_id} for user {user.email}: "
+                        f"✓ Enqueued job {job_id} for user {user.email}: "
                         f"{transaction_data.get('bankName', 'Unknown')} - "
-                        f"₹{transaction_data.get('amount', 'N/A')}"
+                        f"₹{transaction_data.get('amount', 'N/A')} "
+                        f"({transaction_data.get('type', 'unknown')})"
                     )
+                    enqueued_count += 1
                 else:
-                    logger.debug(f"No transaction data in email: {subject}")
+                    logger.info(
+                        f"✗ Skipped email (no transaction data): "
+                        f"'{subject[:50]}...' from {sender}"
+                    )
+                    skipped_count += 1
                     
             except Exception as e:
-                logger.error(f"Error processing email for user {user.email}: {e}")
+                logger.error(f"Error processing email for user {user.email}: {e}", exc_info=True)
+                skipped_count += 1
                 continue
+        
+        logger.info(
+            f"Email processing complete for {user.email}: "
+            f"{enqueued_count} enqueued, {skipped_count} skipped"
+        )
     
     def poll_all_users(self):
         """Poll emails for all enabled users"""
