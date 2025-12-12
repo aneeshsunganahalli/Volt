@@ -1,10 +1,4 @@
-#!/usr/bin/env python3
-"""
-Simple Docker Compose runner for Kronyx
-Usage: 
-    python run.py         # Start containers
-    python run.py stop    # Stop containers
-"""
+
 
 import subprocess
 import sys
