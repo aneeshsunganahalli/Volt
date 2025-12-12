@@ -15,3 +15,6 @@ class GetHealthStatusUseCase implements UseCase<EmailHealthStatus, String> {
   }
 }
 
+
+
+

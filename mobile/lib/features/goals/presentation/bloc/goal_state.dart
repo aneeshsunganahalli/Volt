@@ -104,3 +104,6 @@ class GoalError extends GoalState {
   List<Object?> get props => [message];
 }
 
+
+
+

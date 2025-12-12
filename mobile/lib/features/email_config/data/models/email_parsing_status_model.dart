@@ -27,3 +27,6 @@ class EmailParsingStatusModel extends EmailParsingStatus {
   }
 }
 
+
+
+

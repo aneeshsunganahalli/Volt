@@ -86,3 +86,6 @@ class ScenarioInsightModel extends ScenarioInsight {
   }
 }
 
+
+
+

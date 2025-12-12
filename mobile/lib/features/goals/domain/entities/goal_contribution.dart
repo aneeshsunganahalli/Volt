@@ -19,3 +19,6 @@ class GoalContribution extends Equatable {
   List<Object?> get props => [id, goalId, transactionId, amount, createdAt];
 }
 
+
+
+

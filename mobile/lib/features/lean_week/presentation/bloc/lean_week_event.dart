@@ -50,3 +50,6 @@ class GetIncomeSmoothingRecommendationsEvent extends LeanWeekEvent {
   List<Object?> get props => [token, currentBalance, targetMonths];
 }
 
+
+
+

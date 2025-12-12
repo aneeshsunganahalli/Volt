@@ -14,3 +14,6 @@ class HistoricalAnalysis extends Equatable {
   List<Object?> get props => [monthly, weekly];
 }
 
+
+
+

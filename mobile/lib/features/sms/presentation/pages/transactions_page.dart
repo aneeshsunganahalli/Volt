@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/theme/app_pallette.dart';
 import '../../domain/entities/transaction.dart';
 import '../bloc/sms_bloc.dart';
 import '../bloc/sms_event.dart';
@@ -290,10 +291,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
+                    color: ColorPalette.successLight,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: Colors.green.withOpacity(0.3),
+                      color: ColorPalette.success.withOpacity(0.3),
                     ),
                   ),
                   child: Column(
@@ -303,7 +304,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                         children: [
                           Icon(
                             Icons.arrow_downward,
-                            color: Colors.green,
+                            color: ColorPalette.success,
                             size: 16,
                           ),
                           const SizedBox(width: 4),
@@ -311,7 +312,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             'Received',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.green,
+                              color: ColorPalette.success,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -335,10 +336,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
+                    color: ColorPalette.errorLight,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: Colors.red.withOpacity(0.3),
+                      color: ColorPalette.error.withOpacity(0.3),
                     ),
                   ),
                   child: Column(
@@ -348,7 +349,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                         children: [
                           Icon(
                             Icons.arrow_upward,
-                            color: Colors.red,
+                            color: ColorPalette.error,
                             size: 16,
                           ),
                           const SizedBox(width: 4),
@@ -356,7 +357,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             'Sent',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.red,
+                              color: ColorPalette.error,
                               fontWeight: FontWeight.w500,
                             ),
                           ),

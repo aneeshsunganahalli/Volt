@@ -24,3 +24,6 @@ class RiskSummaryModel extends RiskSummary {
   }
 }
 
+
+
+

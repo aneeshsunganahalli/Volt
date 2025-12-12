@@ -19,7 +19,7 @@ class TransactionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isCredit = transaction.type == TransactionType.credit;
-    final color = isCredit ? Colors.green : Colors.red;
+    final color = isCredit ? ColorPalette.success : ColorPalette.error;
 
     // Determine border color based on theme
     final isDark = theme.brightness == Brightness.dark;
@@ -131,7 +131,7 @@ class TransactionCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: isCredit ? Colors.green.shade400 : Colors.red.shade400,
+                            color: isCredit ? ColorPalette.success : ColorPalette.error,
                           ),
                         ),
                         const SizedBox(height: 6),
@@ -149,7 +149,7 @@ class TransactionCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
-                              color: isCredit ? Colors.green.shade400 : Colors.red.shade400,
+                              color: isCredit ? ColorPalette.success : ColorPalette.error,
                               letterSpacing: 1.2,
                             ),
                           ),

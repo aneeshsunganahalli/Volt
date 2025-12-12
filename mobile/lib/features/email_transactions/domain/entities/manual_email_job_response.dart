@@ -32,3 +32,6 @@ class TransactionPreview extends Equatable {
   List<Object?> get props => [amount, merchant, type, bank];
 }
 
+
+
+

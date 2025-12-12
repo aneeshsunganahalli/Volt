@@ -22,3 +22,6 @@ class HistoricalAnalysisModel extends HistoricalAnalysis {
   }
 }
 
+
+
+

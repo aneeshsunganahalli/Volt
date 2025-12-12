@@ -83,3 +83,6 @@ class GetHealthStatusEvent extends EmailTransactionsEvent {
   List<Object?> get props => [token];
 }
 
+
+
+

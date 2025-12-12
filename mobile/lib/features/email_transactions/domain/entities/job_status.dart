@@ -37,3 +37,6 @@ class JobStatus extends Equatable {
       ];
 }
 
+
+
+

@@ -15,3 +15,6 @@ class JobStats extends Equatable {
   List<Object?> get props => [queued, processing, failed];
 }
 
+
+
+

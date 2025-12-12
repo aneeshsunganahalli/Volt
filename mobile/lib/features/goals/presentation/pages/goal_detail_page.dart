@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../../../init_dependencies.dart';
+import '../../../../core/theme/app_pallette.dart';
 import '../../../../features/auth/data/datasources/auth_local_data_source.dart';
 import '../bloc/goal_bloc.dart';
 import '../bloc/goal_event.dart';
@@ -82,9 +83,9 @@ class _GoalDetailPageState extends State<GoalDetailPage> {
                     const PopupMenuItem(
                       child: Row(
                         children: [
-                          Icon(Icons.delete, color: Colors.red),
-                          SizedBox(width: 8),
-                          Text('Delete', style: TextStyle(color: Colors.red)),
+                          Icon(Icons.delete, color: ColorPalette.error),
+                          const SizedBox(width: 8),
+                          Text('Delete', style: TextStyle(color: ColorPalette.error)),
                         ],
                       ),
                       onTap: null,
@@ -167,20 +168,20 @@ class _GoalDetailPageState extends State<GoalDetailPage> {
                               if (goal.isAchieved)
                                 Chip(
                                   label: const Text('Achieved'),
-                                  backgroundColor: Colors.green,
+                                  backgroundColor: ColorPalette.success,
                                   labelStyle: const TextStyle(color: Colors.white),
                                 )
                               else if (goal.isOverdue)
                                 Chip(
                                   label: const Text('Overdue'),
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: ColorPalette.error,
                                   labelStyle: const TextStyle(color: Colors.white),
                                 ),
                               const SizedBox(width: 8),
                               Chip(
                                 label: Text(goal.isActive ? 'Active' : 'Inactive'),
                                 backgroundColor: goal.isActive
-                                    ? Colors.blue
+                                    ? ColorPalette.info
                                     : Colors.grey,
                                 labelStyle: const TextStyle(color: Colors.white),
                               ),
@@ -264,9 +265,9 @@ class _GoalDetailPageState extends State<GoalDetailPage> {
                               backgroundColor: Colors.grey[300],
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 goal.isAchieved
-                                    ? Colors.green
+                                    ? ColorPalette.success
                                     : goal.isOverdue
-                                        ? Colors.red
+                                        ? ColorPalette.error
                                         : theme.colorScheme.primary,
                               ),
                             ),

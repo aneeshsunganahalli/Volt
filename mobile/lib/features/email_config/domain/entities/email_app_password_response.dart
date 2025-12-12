@@ -15,3 +15,6 @@ class EmailAppPasswordResponse extends Equatable {
   List<Object?> get props => [status, emailParsingEnabled, message];
 }
 
+
+
+

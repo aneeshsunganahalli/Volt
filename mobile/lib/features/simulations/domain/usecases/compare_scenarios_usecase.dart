@@ -39,3 +39,6 @@ class CompareScenariosUseCase
   }
 }
 
+
+
+

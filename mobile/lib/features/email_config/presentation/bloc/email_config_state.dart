@@ -49,3 +49,6 @@ class EmailConfigError extends EmailConfigState {
   List<Object?> get props => [message];
 }
 
+
+
+

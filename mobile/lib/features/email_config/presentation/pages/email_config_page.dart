@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../init_dependencies.dart';
+import '../../../../core/theme/app_pallette.dart';
 import '../../../../features/auth/data/datasources/auth_local_data_source.dart';
 import '../bloc/email_config_bloc.dart';
 import '../bloc/email_config_event.dart';
@@ -66,7 +67,7 @@ class _EmailConfigPageState extends State<EmailConfigPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.response.message),
-                backgroundColor: Colors.green,
+                backgroundColor: ColorPalette.success,
               ),
             );
             _appPasswordController.clear();
@@ -82,7 +83,7 @@ class _EmailConfigPageState extends State<EmailConfigPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.response.message),
-                backgroundColor: Colors.orange,
+                backgroundColor: ColorPalette.warning,
               ),
             );
             if (_token != null) {
@@ -116,13 +117,13 @@ class _EmailConfigPageState extends State<EmailConfigPage> {
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: status.emailParsingEnabled
-                          ? Colors.green.withOpacity(0.1)
-                          : Colors.orange.withOpacity(0.1),
+                          ? ColorPalette.successLight
+                          : ColorPalette.warningLight,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
                         color: status.emailParsingEnabled
-                            ? Colors.green
-                            : Colors.orange,
+                            ? ColorPalette.success
+                            : ColorPalette.warning,
                         width: 2,
                       ),
                     ),
@@ -136,8 +137,8 @@ class _EmailConfigPageState extends State<EmailConfigPage> {
                                   ? Icons.check_circle
                                   : Icons.info_outline,
                               color: status.emailParsingEnabled
-                                  ? Colors.green
-                                  : Colors.orange,
+                                  ? ColorPalette.success
+                                  : ColorPalette.warning,
                             ),
                             const SizedBox(width: 12),
                             Expanded(
@@ -308,7 +309,7 @@ class _EmailConfigPageState extends State<EmailConfigPage> {
                                         },
                                         child: const Text(
                                           'Disable',
-                                          style: TextStyle(color: Colors.red),
+                                          style: TextStyle(color: ColorPalette.error),
                                         ),
                                       ),
                                     ],

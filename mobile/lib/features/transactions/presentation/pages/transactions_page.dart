@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/theme/app_pallette.dart';
 import '../../domain/entities/transaction.dart';
 import '../bloc/transaction_bloc.dart';
 import '../bloc/transaction_event.dart';
@@ -8,6 +9,7 @@ import '../widgets/transaction_card.dart';
 import '../widgets/empty_transactions_view.dart';
 import '../widgets/transaction_summary_card.dart';
 import '../widgets/transaction_form_dialog.dart';
+import '../../../../core/widgets/state_widgets.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/bloc/auth_state.dart';
 
@@ -107,7 +109,7 @@ class _TransactionsPageState extends State<TransactionsPage>
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: const Text('Transaction created successfully'),
-                  backgroundColor: Colors.green,
+                  backgroundColor: ColorPalette.success,
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -119,7 +121,7 @@ class _TransactionsPageState extends State<TransactionsPage>
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: const Text('Transaction updated successfully'),
-                  backgroundColor: Colors.blue,
+                  backgroundColor: ColorPalette.info,
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -130,7 +132,7 @@ class _TransactionsPageState extends State<TransactionsPage>
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: const Text('Transaction deleted successfully'),
-                  backgroundColor: Colors.orange,
+                  backgroundColor: ColorPalette.warning,
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -234,25 +236,12 @@ class _TransactionsPageState extends State<TransactionsPage>
         ),
         Expanded(
           child: filteredTransactions.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.receipt_long_outlined,
-                        size: 64,
-                        color: theme.colorScheme.onSurface.withOpacity(0.3),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'No transactions in last $_selectedDays days',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        ),
-                      ),
-                    ],
-                  ),
+              ? EmptyState(
+                  icon: Icons.receipt_long_outlined,
+                  title: 'No transactions',
+                  description: 'No transactions found in the last $_selectedDays days',
+                  actionLabel: 'Add Transaction',
+                  onAction: () => _showAddTransactionDialog(context),
                 )
               : RefreshIndicator(
                   onRefresh: () async {
@@ -345,7 +334,7 @@ class _TransactionsPageState extends State<TransactionsPage>
   ) {
     final theme = Theme.of(context);
     final isCredit = transaction.type == TransactionType.credit;
-    final color = isCredit ? Colors.green : Colors.red;
+    final color = isCredit ? ColorPalette.success : ColorPalette.error;
 
     showModalBottomSheet(
       context: context,
@@ -424,7 +413,7 @@ class _TransactionsPageState extends State<TransactionsPage>
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
-                                    color: color.shade700,
+                                    color: color,
                                     letterSpacing: 1.2,
                                   ),
                                 ),
@@ -444,7 +433,7 @@ class _TransactionsPageState extends State<TransactionsPage>
                             style: TextStyle(
                               fontSize: 42,
                               fontWeight: FontWeight.bold,
-                              color: color.shade700,
+                              color: color,
                             ),
                           ),
                         ],
@@ -565,7 +554,7 @@ class _TransactionsPageState extends State<TransactionsPage>
                             icon: const Icon(Icons.delete_rounded),
                             label: const Text('Delete'),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
+                              backgroundColor: ColorPalette.error,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(

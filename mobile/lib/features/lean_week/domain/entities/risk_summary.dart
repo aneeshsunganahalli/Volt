@@ -15,3 +15,6 @@ class RiskSummary extends Equatable {
   List<Object?> get props => [riskLevel, riskMessage, immediateActionNeeded];
 }
 
+
+
+

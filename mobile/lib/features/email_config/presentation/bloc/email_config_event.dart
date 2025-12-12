@@ -59,3 +59,6 @@ class UpdateAppPasswordEvent extends EmailConfigEvent {
   List<Object?> get props => [appPassword, consent, token];
 }
 
+
+
+

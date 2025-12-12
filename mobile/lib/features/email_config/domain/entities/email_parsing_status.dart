@@ -22,3 +22,6 @@ class EmailParsingStatus extends Equatable {
       ];
 }
 
+
+
+

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../init_dependencies.dart';
+import '../../../../core/theme/app_pallette.dart';
 import '../../../../features/auth/data/datasources/auth_local_data_source.dart';
 import '../../../transactions/presentation/widgets/transaction_card.dart';
 import '../bloc/email_transactions_bloc.dart';
@@ -238,7 +239,7 @@ class _EmailTransactionsPageState extends State<EmailTransactionsPage> {
               'Queued',
               stats.queued.toString(),
               Icons.queue,
-              Colors.blue,
+              ColorPalette.info,
             ),
             const SizedBox(height: 16),
             _buildStatCard(
@@ -247,7 +248,7 @@ class _EmailTransactionsPageState extends State<EmailTransactionsPage> {
               'Processing',
               stats.processing.toString(),
               Icons.sync,
-              Colors.orange,
+              ColorPalette.warning,
             ),
             const SizedBox(height: 16),
             _buildStatCard(
@@ -256,7 +257,7 @@ class _EmailTransactionsPageState extends State<EmailTransactionsPage> {
               'Failed',
               stats.failed.toString(),
               Icons.error_outline,
-              Colors.red,
+              ColorPalette.error,
             ),
             const SizedBox(height: 32),
             SizedBox(
@@ -331,11 +332,11 @@ class _EmailTransactionsPageState extends State<EmailTransactionsPage> {
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: health.status == 'healthy'
-                    ? Colors.green.withOpacity(0.1)
-                    : Colors.red.withOpacity(0.1),
+                    ? ColorPalette.successLight
+                    : ColorPalette.errorLight,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: health.status == 'healthy' ? Colors.green : Colors.red,
+                  color: health.status == 'healthy' ? ColorPalette.success : ColorPalette.error,
                   width: 2,
                 ),
               ),
@@ -345,7 +346,7 @@ class _EmailTransactionsPageState extends State<EmailTransactionsPage> {
                     health.status == 'healthy'
                         ? Icons.check_circle
                         : Icons.error,
-                    color: health.status == 'healthy' ? Colors.green : Colors.red,
+                    color: health.status == 'healthy' ? ColorPalette.success : ColorPalette.error,
                     size: 32,
                   ),
                   const SizedBox(width: 16),
@@ -398,7 +399,7 @@ class _EmailTransactionsPageState extends State<EmailTransactionsPage> {
               'Queued',
               health.queueStats.queued.toString(),
               Icons.queue,
-              Colors.blue,
+              ColorPalette.info,
             ),
             const SizedBox(height: 16),
             _buildStatCard(
@@ -407,7 +408,7 @@ class _EmailTransactionsPageState extends State<EmailTransactionsPage> {
               'Processing',
               health.queueStats.processing.toString(),
               Icons.sync,
-              Colors.orange,
+              ColorPalette.warning,
             ),
             const SizedBox(height: 16),
             _buildStatCard(
@@ -416,7 +417,7 @@ class _EmailTransactionsPageState extends State<EmailTransactionsPage> {
               'Failed',
               health.queueStats.failed.toString(),
               Icons.error_outline,
-              Colors.red,
+              ColorPalette.error,
             ),
             const SizedBox(height: 32),
             SizedBox(

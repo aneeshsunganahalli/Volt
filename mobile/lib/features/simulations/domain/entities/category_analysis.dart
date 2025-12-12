@@ -28,3 +28,6 @@ class CategoryAnalysis extends Equatable {
       ];
 }
 
+
+
+

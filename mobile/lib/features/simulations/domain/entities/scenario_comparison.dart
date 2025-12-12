@@ -83,3 +83,6 @@ class ScenarioComparisonResponse extends Equatable {
       ];
 }
 
+
+
+

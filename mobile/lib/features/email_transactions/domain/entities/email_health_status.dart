@@ -18,3 +18,6 @@ class EmailHealthStatus extends Equatable {
   List<Object?> get props => [status, redisConnected, queueStats, timestamp];
 }
 
+
+
+

@@ -291,7 +291,7 @@ class _TransactionFormDialogState extends State<TransactionFormDialog> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: const Text('Bill scanned successfully! Please review the fields.'),
-                backgroundColor: Colors.green,
+                backgroundColor: ColorPalette.success,
                 behavior: SnackBarBehavior.floating,
               ),
             );
@@ -304,7 +304,7 @@ class _TransactionFormDialogState extends State<TransactionFormDialog> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('OCR Error: ${state.message}'),
-              backgroundColor: Colors.orange,
+              backgroundColor: ColorPalette.warning,
               behavior: SnackBarBehavior.floating,
             ),
           );
@@ -538,7 +538,7 @@ class _TransactionFormDialogState extends State<TransactionFormDialog> {
                             child: _buildTypeChip(
                               'Debit',
                               TransactionType.debit,
-                              Colors.red,
+                              ColorPalette.error,
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -546,7 +546,7 @@ class _TransactionFormDialogState extends State<TransactionFormDialog> {
                             child: _buildTypeChip(
                               'Credit',
                               TransactionType.credit,
-                              Colors.green,
+                              ColorPalette.success,
                             ),
                           ),
                         ],
@@ -873,7 +873,7 @@ class _TransactionFormDialogState extends State<TransactionFormDialog> {
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
-                color: Colors.red,
+                color: ColorPalette.error,
                 width: 1,
               ),
             ),

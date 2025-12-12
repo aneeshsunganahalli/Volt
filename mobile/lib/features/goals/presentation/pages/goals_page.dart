@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../init_dependencies.dart';
+import '../../../../core/theme/app_pallette.dart';
 import '../../../../features/auth/data/datasources/auth_local_data_source.dart';
 import '../bloc/goal_bloc.dart';
 import '../bloc/goal_event.dart';
@@ -84,7 +85,7 @@ class _GoalsPageState extends State<GoalsPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Goal created successfully'),
-                backgroundColor: Colors.green,
+                backgroundColor: ColorPalette.success,
               ),
             );
             _loadGoals();
@@ -92,7 +93,7 @@ class _GoalsPageState extends State<GoalsPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Goal updated successfully'),
-                backgroundColor: Colors.green,
+                backgroundColor: ColorPalette.success,
               ),
             );
             _loadGoals();
@@ -100,7 +101,7 @@ class _GoalsPageState extends State<GoalsPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Goal deleted successfully'),
-                backgroundColor: Colors.green,
+                backgroundColor: ColorPalette.success,
               ),
             );
             _loadGoals();
@@ -225,9 +226,9 @@ class _GoalsPageState extends State<GoalsPage> {
 
     Color cardColor = theme.colorScheme.surface;
     if (isAchieved) {
-      cardColor = Colors.green.withOpacity(0.1);
+      cardColor = ColorPalette.successLight;
     } else if (isOverdue) {
-      cardColor = Colors.red.withOpacity(0.1);
+      cardColor = ColorPalette.errorLight;
     }
 
     return Card(
@@ -256,13 +257,13 @@ class _GoalsPageState extends State<GoalsPage> {
                   if (isAchieved)
                     Chip(
                       label: const Text('Achieved'),
-                      backgroundColor: Colors.green,
+                      backgroundColor: ColorPalette.success,
                       labelStyle: const TextStyle(color: Colors.white),
                     )
                   else if (isOverdue)
                     Chip(
                       label: const Text('Overdue'),
-                      backgroundColor: Colors.red,
+                      backgroundColor: ColorPalette.error,
                       labelStyle: const TextStyle(color: Colors.white),
                     )
                   else if (!goal.isActive)
@@ -330,9 +331,9 @@ class _GoalsPageState extends State<GoalsPage> {
                   backgroundColor: Colors.grey[300],
                   valueColor: AlwaysStoppedAnimation<Color>(
                     isAchieved
-                        ? Colors.green
+                        ? ColorPalette.success
                         : isOverdue
-                            ? Colors.red
+                            ? ColorPalette.error
                             : theme.colorScheme.primary,
                   ),
                 ),

@@ -15,3 +15,6 @@ class CashFlowScenario extends Equatable {
   List<Object?> get props => [best, likely, worst];
 }
 
+
+
+

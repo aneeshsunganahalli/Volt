@@ -148,3 +148,8 @@ The backend follows a modular structure:
 ### Mobile Development
 
 The mobile app is built with Flutter and follows clean architecture principles.
+
+## Documentation
+
+### Mobile UI/UX
+- **UI/UX Planning**: `mobile/docs/UI_UX_PLAN.md`

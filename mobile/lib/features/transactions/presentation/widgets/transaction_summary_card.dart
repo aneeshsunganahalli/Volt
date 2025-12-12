@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/theme/app_pallette.dart';
 
 class TransactionSummaryCard extends StatelessWidget {
   final double totalCredit;
@@ -72,7 +73,7 @@ class TransactionSummaryCard extends StatelessWidget {
                   icon: Icons.arrow_downward_rounded,
                   label: 'Received',
                   amount: totalCredit,
-                  color: Colors.green,
+                  color: ColorPalette.success,
                   theme: theme,
                 ),
               ),
@@ -83,7 +84,7 @@ class TransactionSummaryCard extends StatelessWidget {
                   icon: Icons.arrow_upward_rounded,
                   label: 'Sent',
                   amount: totalDebit,
-                  color: Colors.red,
+                  color: ColorPalette.error,
                   theme: theme,
                 ),
               ),
@@ -97,7 +98,7 @@ class TransactionSummaryCard extends StatelessWidget {
               color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: (netAmount >= 0 ? Colors.green : Colors.red)
+                color: (netAmount >= 0 ? ColorPalette.success : ColorPalette.error)
                     .withOpacity(0.3),
                 width: 1.5,
               ),
@@ -111,7 +112,7 @@ class TransactionSummaryCard extends StatelessWidget {
                       netAmount >= 0
                           ? Icons.trending_up_rounded
                           : Icons.trending_down_rounded,
-                      color: netAmount >= 0 ? Colors.green : Colors.red,
+                      color: netAmount >= 0 ? ColorPalette.success : ColorPalette.error,
                       size: 24,
                     ),
                     const SizedBox(width: 12),
@@ -189,7 +190,7 @@ class TransactionSummaryCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: color is MaterialColor ? color.shade700 : color,
+                  color: color,
                 ),
               ),
             ],

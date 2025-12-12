@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../init_dependencies.dart';
+import '../../../../core/theme/app_pallette.dart';
 import '../../../../features/auth/data/datasources/auth_local_data_source.dart';
 import '../bloc/simulation_bloc.dart';
 import '../bloc/simulation_event.dart';
@@ -292,10 +293,10 @@ class _SimulationsPageState extends State<SimulationsPage>
                               ? Icons.info
                               : Icons.warning,
                       color: win.difficulty == 'easy'
-                          ? Colors.green
+                          ? ColorPalette.success
                           : win.difficulty == 'moderate'
-                              ? Colors.orange
-                              : Colors.red,
+                              ? ColorPalette.warning
+                              : ColorPalette.error,
                     ),
                     title: Text(win.category),
                     subtitle: Text(win.action),
@@ -318,10 +319,10 @@ class _SimulationsPageState extends State<SimulationsPage>
             ...insight.warnings.map((warning) => Card(
                   margin: const EdgeInsets.only(bottom: 8),
                   color: warning.severity == 'error'
-                      ? Colors.red.shade50
+                      ? ColorPalette.errorLight
                       : warning.severity == 'warning'
-                          ? Colors.orange.shade50
-                          : Colors.blue.shade50,
+                          ? ColorPalette.warningLight
+                          : ColorPalette.infoLight,
                   child: ListTile(
                     leading: Icon(
                       warning.severity == 'error'
@@ -330,10 +331,10 @@ class _SimulationsPageState extends State<SimulationsPage>
                               ? Icons.warning
                               : Icons.info,
                       color: warning.severity == 'error'
-                          ? Colors.red
+                          ? ColorPalette.error
                           : warning.severity == 'warning'
-                              ? Colors.orange
-                              : Colors.blue,
+                              ? ColorPalette.warning
+                              : ColorPalette.info,
                     ),
                     title: Text(warning.message),
                     subtitle: warning.recommendation != null

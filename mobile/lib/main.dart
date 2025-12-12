@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/theme/app_pallette.dart';
+import 'core/navigation/main_navigator.dart';
+import 'core/widgets/state_widgets.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/auth/presentation/bloc/auth_event.dart';
 import 'features/auth/presentation/bloc/auth_state.dart';
-import 'features/auth/presentation/pages/home_page.dart';
 import 'features/auth/presentation/pages/login_page.dart';
 import 'init_dependencies.dart';
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => sl<AuthBloc>()..add(CheckAuthStatusEvent()),
       child: MaterialApp(
-        title: 'Kronyx',
+        title: 'Volt',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: AppColorScheme.lightColorScheme,
@@ -50,10 +51,10 @@ class AuthWrapper extends StatelessWidget {
       builder: (context, state) {
         if (state is AuthLoading || state is AuthInitial) {
           return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            body: LoadingState(message: 'Checking your account...'),
           );
         } else if (state is AuthAuthenticated) {
-          return const HomePage();
+          return const MainNavigator();
         } else {
           return const LoginPage();
         }

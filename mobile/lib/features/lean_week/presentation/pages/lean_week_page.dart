@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../init_dependencies.dart';
+import '../../../../core/theme/app_pallette.dart';
 import '../../../../features/auth/data/datasources/auth_local_data_source.dart';
 import '../bloc/lean_week_bloc.dart';
 import '../bloc/lean_week_event.dart';
@@ -229,18 +230,18 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.red.withOpacity(0.1),
+                        color: ColorPalette.errorLight,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.warning, color: Colors.red),
+                          const Icon(Icons.warning, color: ColorPalette.error),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
                               'Immediate action required',
                               style: TextStyle(
-                                color: Colors.red,
+                                color: ColorPalette.error,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -273,7 +274,7 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                   'Lean Frequency',
                   '${(analysis.historicalAnalysis.monthly.leanFrequency * 100).toStringAsFixed(1)}%',
                   Icons.trending_down,
-                  Colors.orange,
+                  ColorPalette.warning,
                 ),
               ),
               const SizedBox(width: 12),
@@ -283,7 +284,7 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                   'Avg Severity',
                   '₹${analysis.historicalAnalysis.monthly.avgLeanSeverity.toStringAsFixed(2)}',
                   Icons.attach_money,
-                  Colors.red,
+                  ColorPalette.error,
                 ),
               ),
             ],
@@ -346,9 +347,9 @@ class _LeanWeekPageState extends State<LeanWeekPage>
             ),
             const SizedBox(height: 12),
             ...analysis.cashFlowForecast.warnings.map((warning) => Card(
-                  color: Colors.orange.withOpacity(0.1),
+                  color: ColorPalette.warningLight,
                   child: ListTile(
-                    leading: const Icon(Icons.warning, color: Colors.orange),
+                    leading: const Icon(Icons.warning, color: ColorPalette.warning),
                     title: Text(warning),
                   ),
                 )),
@@ -375,7 +376,7 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                   'Avg Income',
                   '₹${forecast.avgMonthlyIncome.toStringAsFixed(2)}',
                   Icons.arrow_upward,
-                  Colors.green,
+                  ColorPalette.success,
                 ),
               ),
               const SizedBox(width: 12),
@@ -385,7 +386,7 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                   'Avg Expenses',
                   '₹${forecast.avgMonthlyExpenses.toStringAsFixed(2)}',
                   Icons.arrow_downward,
-                  Colors.red,
+                  ColorPalette.error,
                 ),
               ),
             ],
@@ -399,7 +400,7 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                   'Volatility',
                   '${(forecast.incomeVolatility * 100).toStringAsFixed(1)}%',
                   Icons.show_chart,
-                  Colors.orange,
+                  ColorPalette.warning,
                 ),
               ),
               const SizedBox(width: 12),
@@ -409,7 +410,7 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                   'Confidence',
                   '${(forecast.confidence * 100).toStringAsFixed(1)}%',
                   Icons.verified,
-                  Colors.blue,
+                  ColorPalette.info,
                 ),
               ),
             ],
@@ -444,9 +445,9 @@ class _LeanWeekPageState extends State<LeanWeekPage>
             ),
             const SizedBox(height: 12),
             ...forecast.warnings.map((warning) => Card(
-                  color: Colors.orange.withOpacity(0.1),
+                  color: ColorPalette.warningLight,
                   child: ListTile(
-                    leading: const Icon(Icons.warning, color: Colors.orange),
+                    leading: const Icon(Icons.warning, color: ColorPalette.warning),
                     title: Text(warning),
                   ),
                 )),
@@ -467,7 +468,7 @@ class _LeanWeekPageState extends State<LeanWeekPage>
         children: [
           // Emergency Fund Card
           Card(
-            color: Colors.blue.withOpacity(0.1),
+            color: ColorPalette.infoLight,
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -475,7 +476,7 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.savings, color: Colors.blue, size: 32),
+                      const Icon(Icons.savings, color: ColorPalette.info, size: 32),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(
@@ -505,7 +506,7 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                     value: recommendations.currentBalance /
                         recommendations.targetEmergencyFund,
                     backgroundColor: Colors.grey[300],
-                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+                    valueColor: const AlwaysStoppedAnimation<Color>(ColorPalette.info),
                   ),
                   const SizedBox(height: 8),
                   Row(
@@ -520,7 +521,7 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                       Text(
                         'Gap: ₹${recommendations.emergencyFundGap.toStringAsFixed(2)}',
                         style: TextStyle(
-                          color: Colors.orange,
+                          color: ColorPalette.warning,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -611,7 +612,7 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Icon(Icons.check_circle,
-                                  color: Colors.green, size: 20),
+                                  color: ColorPalette.success, size: 20),
                               const SizedBox(width: 8),
                               Expanded(child: Text(rec)),
                             ],
@@ -634,7 +635,7 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Icon(Icons.play_arrow,
-                                  color: Colors.blue, size: 20),
+                                  color: ColorPalette.info, size: 20),
                               const SizedBox(width: 8),
                               Expanded(child: Text(item)),
                             ],
@@ -717,9 +718,9 @@ class _LeanWeekPageState extends State<LeanWeekPage>
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       color: isRisk
-          ? Colors.red.withOpacity(0.1)
+          ? ColorPalette.errorLight
           : isLean
-              ? Colors.orange.withOpacity(0.1)
+              ? ColorPalette.warningLight
               : null,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -740,19 +741,19 @@ class _LeanWeekPageState extends State<LeanWeekPage>
                 if (isLean)
                   Chip(
                     label: const Text('Lean Period'),
-                    backgroundColor: Colors.orange.withOpacity(0.2),
+                    backgroundColor: ColorPalette.warningLight,
                   ),
                 if (isRisk)
                   Chip(
                     label: const Text('At Risk'),
-                    backgroundColor: Colors.red.withOpacity(0.2),
+                    backgroundColor: ColorPalette.errorLight,
                   ),
               ],
             ),
             const SizedBox(height: 12),
-            _buildScenarioRow('Best', period.netCashFlow.best, Colors.green),
-            _buildScenarioRow('Likely', period.netCashFlow.likely, Colors.blue),
-            _buildScenarioRow('Worst', period.netCashFlow.worst, Colors.red),
+            _buildScenarioRow('Best', period.netCashFlow.best, ColorPalette.success),
+            _buildScenarioRow('Likely', period.netCashFlow.likely, ColorPalette.info),
+            _buildScenarioRow('Worst', period.netCashFlow.worst, ColorPalette.error),
           ],
         ),
       ),
@@ -808,11 +809,11 @@ class _LeanWeekPageState extends State<LeanWeekPage>
   Color _getRiskColor(String riskLevel) {
     switch (riskLevel.toUpperCase()) {
       case 'LOW':
-        return Colors.green;
+        return ColorPalette.success;
       case 'MODERATE':
-        return Colors.orange;
+        return ColorPalette.warning;
       case 'HIGH':
-        return Colors.red;
+        return ColorPalette.error;
       default:
         return Colors.grey;
     }
@@ -834,11 +835,11 @@ class _LeanWeekPageState extends State<LeanWeekPage>
   Color _getVolatilityColor(String level) {
     switch (level.toLowerCase()) {
       case 'low':
-        return Colors.green.withOpacity(0.2);
+        return ColorPalette.successLight;
       case 'medium':
-        return Colors.orange.withOpacity(0.2);
+        return ColorPalette.warningLight;
       case 'high':
-        return Colors.red.withOpacity(0.2);
+        return ColorPalette.errorLight;
       default:
         return Colors.grey.withOpacity(0.2);
     }
