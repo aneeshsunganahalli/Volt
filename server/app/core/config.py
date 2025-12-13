@@ -1,3 +1,4 @@
+import os
 from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
 
@@ -10,7 +11,7 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int
     gemini_api_key: str
     
-    # Redis configuration
+    # Redis configuration (can use REDIS_URL or individual components)
     redis_host: str = "redis"
     redis_port: int = 6379
     redis_db: int = 0
@@ -35,7 +36,13 @@ class Settings(BaseSettings):
     
     @property
     def redis_url(self) -> str:
-        """Construct Redis URL from components"""
+        """Get Redis URL from REDIS_URL env var (Heroku) or construct from components"""
+        # Check if REDIS_URL is set (Heroku Key-Value Store format)
+        heroku_redis_url = os.getenv('REDIS_URL')
+        if heroku_redis_url:
+            return heroku_redis_url
+        
+        # Otherwise construct from individual components
         return f"redis://{self.redis_host}:{self.redis_port}/{self.redis_db}"
 
 settings = Settings()

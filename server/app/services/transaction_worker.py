@@ -178,13 +178,15 @@ class TransactionWorker:
 
 def main():
     """Main entry point for worker service"""
-    # Redis configuration
-    redis_host = os.getenv("REDIS_HOST", "localhost")
-    redis_port = int(os.getenv("REDIS_PORT", "6379"))
-    redis_db = int(os.getenv("REDIS_DB", "0"))
-    redis_queue_name = os.getenv("REDIS_QUEUE_NAME", "bank-txn-jobs")
-    redis_url = f"redis://{redis_host}:{redis_port}/{redis_db}"
+    # Redis configuration - prioritize REDIS_URL (Heroku) over individual components
+    redis_url = os.getenv("REDIS_URL")
+    if not redis_url:
+        redis_host = os.getenv("REDIS_HOST", "localhost")
+        redis_port = int(os.getenv("REDIS_PORT", "6379"))
+        redis_db = int(os.getenv("REDIS_DB", "0"))
+        redis_url = f"redis://{redis_host}:{redis_port}/{redis_db}"
     
+    redis_queue_name = os.getenv("REDIS_QUEUE_NAME", "bank-txn-jobs")
     default_user_id = int(os.getenv("DEFAULT_USER_ID", "1"))
     
     worker = TransactionWorker(

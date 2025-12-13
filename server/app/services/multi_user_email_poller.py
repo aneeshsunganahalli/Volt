@@ -190,10 +190,14 @@ class MultiUserEmailPoller:
 if __name__ == "__main__":
     import os
     
-    redis_host = os.getenv("REDIS_HOST", "localhost")
-    redis_port = os.getenv("REDIS_PORT", "6379")
-    redis_db = os.getenv("REDIS_DB", "0")
-    redis_url = f"redis://{redis_host}:{redis_port}/{redis_db}"
+    # Redis configuration - prioritize REDIS_URL (Heroku) over individual components
+    redis_url = os.getenv("REDIS_URL")
+    if not redis_url:
+        redis_host = os.getenv("REDIS_HOST", "localhost")
+        redis_port = os.getenv("REDIS_PORT", "6379")
+        redis_db = os.getenv("REDIS_DB", "0")
+        redis_url = f"redis://{redis_host}:{redis_port}/{redis_db}"
+    
     redis_queue_name = os.getenv("REDIS_QUEUE_NAME", "transaction_emails")
     poll_interval = int(os.getenv("IMAP_POLL_INTERVAL", "300"))
     
