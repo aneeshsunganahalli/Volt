@@ -379,13 +379,13 @@ class InsightCalculator:
             amount: Amount to format
             
         Returns:
-            Formatted string like "$1,234" or "$1,234.50"
+            Formatted string like "₹1,234" or "₹1,234.50"
             
         Example:
             >>> calc = InsightCalculator()
             >>> calc.format_currency(1234.56)
-            '$1,235'
+            '₹1,235'
             >>> calc.format_currency(1234500)
-            '$1,234,500'
+            '₹1,234,500'
         """
-        return f"${abs(amount):,.0f}"
+        return f"₹{abs(amount):,.0f}"

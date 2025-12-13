@@ -99,7 +99,7 @@ def simulate_reallocation(
                 new_monthly=Decimal(str(change)),
                 change_percent=100.0,
                 feasibility="comfortable",
-                impact_note=f"Allocating ${abs(change):.2f} to {category}"
+                impact_note=f"Allocating ₹{abs(change):.2f} to {category}"
             ))
             continue
         
@@ -181,7 +181,7 @@ def simulate_reallocation(
     decreases = [r for r in reallocation_details if r.change_amount < 0]
     
     if increases and decreases:
-        recommendations.append(f"You're moving ${sum(abs(float(r.change_amount)) for r in decreases):.2f} from {len(decreases)} categories to {len(increases)} categories")
+        recommendations.append(f"You're moving ₹{sum(abs(float(r.change_amount)) for r in decreases):.2f} from {len(decreases)} categories to {len(increases)} categories")
     
     difficult_ones = [r for r in reallocation_details if r.feasibility in ["difficult", "unrealistic"]]
     if difficult_ones:

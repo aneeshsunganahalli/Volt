@@ -126,7 +126,7 @@ class TestInsightCalculator:
     def test_potential_savings_below_threshold(self, calculator):
         """Test savings calculation below minimum spending."""
         savings = calculator.calculate_potential_savings(30, 0.9)
-        assert savings == 0  # Below $50 threshold
+        assert savings == 0  # Below ₹50 threshold
     
     def test_income_volatility_stable(self, calculator):
         """Test stable income assessment."""
@@ -178,8 +178,8 @@ class TestInsightCalculator:
     
     def test_currency_formatting(self, calculator):
         """Test currency formatter."""
-        assert calculator.format_currency(1234.56) == "$1,235"
-        assert calculator.format_currency(999999) == "$999,999"
+        assert calculator.format_currency(1234.56) == "₹1,235"
+        assert calculator.format_currency(999999) == "₹999,999"
     
     def test_annual_impact(self, calculator):
         """Test annual impact calculation."""
@@ -339,7 +339,7 @@ class TestInsightFormatterPydantic:
         """Test quick wins filters categories below threshold."""
         model = MockBehaviourModel()
         model.categories['LOW_SPENDING'] = {
-            'mean': 20.0,  # Below $50 threshold
+            'mean': 20.0,  # Below ₹50 threshold
             'std': 5.0,
             'count': 10,
             'total': 200.0
@@ -542,7 +542,7 @@ class TestIntegrationScenarios:
         
         # Verify structure is frontend-ready
         assert isinstance(result, ScenarioInsight)
-        assert '$' in result.headline
+        assert '₹' in result.headline
         assert len(result.quick_wins) > 0
-        assert result.annual_impact.startswith('$')
+        assert result.annual_impact.startswith('₹')
         assert 0 <= result.achievability_score <= 100

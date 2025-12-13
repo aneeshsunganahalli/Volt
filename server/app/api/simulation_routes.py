@@ -168,7 +168,7 @@ async def get_dashboard_insights(
     if quick_wins:
         top_win = quick_wins[0]
         recommended_actions.append(
-            f"Start with {top_win.category}: {top_win.action} to save ${top_win.monthly_savings:.0f}/month"
+            f"Start with {top_win.category}: {top_win.action} to save ₹{top_win.monthly_savings:.0f}/month"
         )
     
     if any(w.severity == 'high' for w in risk_warnings):

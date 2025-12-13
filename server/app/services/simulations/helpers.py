@@ -64,7 +64,7 @@ def generate_recommendations(
                 
                 recommendations.append({
                     "category": "INCOME_STRATEGY",
-                    "action": f"In months earning >${good_month_threshold:,.0f}, save ${extra_savings_potential:,.0f} extra for lean periods",
+                    "action": f"In months earning >₹{good_month_threshold:,.0f}, save ₹{extra_savings_potential:,.0f} extra for lean periods",
                     "potential_impact": float(extra_savings_potential),
                     "difficulty": "easy",
                     "type": "freelancer_planning",
@@ -92,7 +92,7 @@ def generate_recommendations(
                     
                     recommendations.append({
                         "category": "INCOME_STRATEGY",
-                        "action": f"In months earning <${lean_month_threshold:,.0f}, reduce {categories_list} spending by 30%",
+                        "action": f"In months earning <₹{lean_month_threshold:,.0f}, reduce {categories_list} spending by 30%",
                         "potential_impact": float(total_flexible_savings),
                         "difficulty": "moderate",
                         "type": "freelancer_planning",
@@ -177,7 +177,7 @@ def generate_recommendations(
             if volatility > 0.3:
                 recommendations.append({
                     "category": "FREELANCER_STRATEGY",
-                    "action": f"In months earning >${good_month_threshold:.0f}, invest ${surplus_potential:.0f} (80% of surplus) in business/emergency fund",
+                    "action": f"In months earning >₹{good_month_threshold:.0f}, invest ₹{surplus_potential:.0f} (80% of surplus) in business/emergency fund",
                     "potential_impact": float(surplus_potential),
                     "difficulty": "easy",
                     "type": "freelancer_advice"
@@ -438,9 +438,9 @@ def generate_comparison_insights(
     # Impact analysis
     max_impact = max(scenarios, key=lambda s: float(s.annual_impact))
     if scenario_type == "reduction":
-        insights.append(f"Maximum annual savings potential: ${float(max_impact.annual_impact):,.0f} with {max_impact.name}")
+        insights.append(f"Maximum annual savings potential: ₹{float(max_impact.annual_impact):,.0f} with {max_impact.name}")
     else:
-        insights.append(f"Maximum annual spending increase: ${float(max_impact.annual_impact):,.0f} with {max_impact.name}")
+        insights.append(f"Maximum annual spending increase: ₹{float(max_impact.annual_impact):,.0f} with {max_impact.name}")
     
     # Behavioral insight
     if impulse_score > 0.6 and scenario_type == "reduction":

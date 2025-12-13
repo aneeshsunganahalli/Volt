@@ -108,7 +108,7 @@ class InsightFormatter:
         # Generate headline
         action_word = "Save" if total_change < 0 else "Increase"
         effort_level = feasibility.replace('_', ' ').title()
-        headline = f"{action_word} ${abs(total_change):.0f}/month with {effort_level} changes"
+        headline = f"{action_word} ₹{abs(total_change):.0f}/month with {effort_level} changes"
         
         # Build quick wins with validation
         quick_wins = self._build_quick_wins(category_breakdown)
@@ -404,7 +404,7 @@ class InsightFormatter:
                         severity=severity,
                         title='High Income Variability' if status == 'variable' else 'Moderate Income Variability',
                         message=f"Your income varies by {volatility:.0%} month-to-month",
-                        recommendation=f"Build a {emergency_months}-month emergency fund (${target_fund:,.0f}). Save extra during high-income months to buffer lean periods.",
+                        recommendation=f"Build a {emergency_months}-month emergency fund (₹{target_fund:,.0f}). Save extra during high-income months to buffer lean periods.",
                         metric=f"{volatility * 100:.0f}% income volatility"
                     )
                     warnings.append(warning)
@@ -654,7 +654,7 @@ class InsightFormatter:
             message=message,
             volatility_percent=int(volatility * 100),
             avg_monthly=avg_income,
-            recommendation=f"Target emergency fund: ${target:,.0f} ({months} months coverage)",
+            recommendation=f"Target emergency fund: ₹{target:,.0f} ({months} months coverage)",
             emergency_fund_target=target,
             emergency_fund_months=months
         )

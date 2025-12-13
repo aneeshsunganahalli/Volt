@@ -318,10 +318,10 @@ class LeanWeekPredictor:
             balance_risk = worst_balance < 0
             
             if is_lean:
-                warnings.append(f"Month {period_num}: Potential lean period - worst case deficit of ${abs(worst_case_net):,.2f}")
+                warnings.append(f"Month {period_num}: Potential lean period - worst case deficit of ₹{abs(worst_case_net):,.2f}")
             
             if balance_risk:
-                warnings.append(f"Month {period_num}: CRITICAL - Balance may go negative (${worst_balance:,.2f})")
+                warnings.append(f"Month {period_num}: CRITICAL - Balance may go negative (₹{worst_balance:,.2f})")
             
             forecasts.append({
                 'period': period_num,
@@ -489,9 +489,9 @@ class LeanWeekPredictor:
         
         if fund_gap > 0:
             if fund_gap > 5000:
-                recommendations.append(f'Emergency fund gap is ${fund_gap:,.2f}. Make this your top priority.')
+                recommendations.append(f'Emergency fund gap is ₹{fund_gap:,.2f}. Make this your top priority.')
             else:
-                recommendations.append(f'You\'re close to your target. Just ${fund_gap:,.2f} more needed.')
+                recommendations.append(f'You\'re close to your target. Just ₹{fund_gap:,.2f} more needed.')
         else:
             recommendations.append('Emergency fund target reached! Consider investing surplus.')
         

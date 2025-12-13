@@ -54,7 +54,7 @@ class ScenarioInsight(BaseModel):
         default='category_breakdown_bar_chart',
         description="Suggested chart type for frontend"
     )
-    annual_impact: str = Field(..., description="Formatted string like '$12,000'")
+    annual_impact: str = Field(..., description="Formatted string like '₹12,000'")
     annual_impact_value: float = Field(..., description="Raw numeric value for calculations")
     achievability_score: int = Field(..., ge=0, le=100, description="Achievability percentage")
     total_categories_affected: int = Field(..., ge=0, description="Number of categories changed")

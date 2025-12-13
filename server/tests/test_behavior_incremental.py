@@ -717,8 +717,8 @@ class TestBoundaryConditionsIncremental:
     """Test edge cases and unusual scenarios in incremental processing."""
     
     def test_zero_amount_transaction(self, test_db, test_user, behavior_engine):
-        """Test handling of $0.00 transactions."""
-        # WHY: Some systems may record $0 transactions (failed payments, adjustments)
+        """Test handling of ₹0.00 transactions."""
+        # WHY: Some systems may record ₹0 transactions (failed payments, adjustments)
         
         tx = Transaction(
             user_id=test_user.id,
@@ -747,7 +747,7 @@ class TestBoundaryConditionsIncremental:
             assert stats["max"] == 0.0, "Max should be 0.0"
     
     def test_very_large_amount(self, test_db, test_user, behavior_engine):
-        """Test handling of unusually large amounts (e.g., $100k)."""
+        """Test handling of unusually large amounts (e.g., ₹100k)."""
         # WHY: Ensure no overflow or calculation errors with large numbers
         
         tx = Transaction(

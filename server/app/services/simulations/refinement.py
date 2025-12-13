@@ -35,10 +35,10 @@ Analyze this budget simulation:
 - Scenario: {data.scenario_type}
 - Target: {data.target_percent}% change
 - Achievable: {data.achievable_percent}%
-- Monthly baseline: ${data.baseline_monthly}
-- Projected monthly: ${data.projected_monthly}
-- Total change: ${data.total_change}
-- Annual impact: ${data.annual_impact}
+- Monthly baseline: ₹{data.baseline_monthly}
+- Projected monthly: ₹{data.projected_monthly}
+- Total change: ₹{data.total_change}
+- Annual impact: ₹{data.annual_impact}
 - Feasibility: {data.feasibility}
 - Top categories: {', '.join(data.category_breakdown.keys())}
 
@@ -47,12 +47,12 @@ Provide a clear, actionable insight in 2-4 sentences using markdown formatting.
         else:  # ScenarioComparisonResponse
             scenarios_info = "\n".join([
                 f"- {s.name} ({s.scenario_type}): {s.target_percent}% change, {s.feasibility} feasibility, "
-                f"${s.total_change} monthly change, affects {', '.join(s.top_categories[:2])}"
+                f"₹{s.total_change} monthly change, affects {', '.join(s.top_categories[:2])}"
                 for s in data.scenarios
             ])
             prompt = f"""
 Analyze this scenario comparison:
-- Baseline monthly: ${data.baseline_monthly}
+- Baseline monthly: ₹{data.baseline_monthly}
 - Time period: {data.time_period_days} days
 - Number of scenarios: {len(data.scenarios)}
 - Recommended scenario: {data.recommended_scenario_id}

@@ -133,11 +133,11 @@ def project_future_spending(
     
     # Key insights
     insights = []
-    insights.append(f"Total projected spending over {projection_months} months: ${total_projected:,.2f}")
+    insights.append(f"Total projected spending over {projection_months} months: ₹{total_projected:,.2f}")
     
     if total_change != 0:
         change_word = "savings" if total_change < 0 else "increase"
-        insights.append(f"Expected {change_word}: ${abs(total_change):,.2f} compared to baseline")
+        insights.append(f"Expected {change_word}: ₹{abs(total_change):,.2f} compared to baseline")
     
     if behavioral_changes:
         most_reduced = min(changes.items(), key=lambda x: x[1]) if changes else None
