@@ -293,38 +293,38 @@ class TransactionCard extends StatelessWidget {
                   value: DateFormat('dd MMM yyyy, hh:mm a').format(transaction.timestamp!),
                 ),
               
-              if (transaction.rawMessage != null) ...[
-                const SizedBox(height: 16),
-                const Divider(),
-                const SizedBox(height: 16),
-                Text(
-                  'Original Message',
+              ...[
+              const SizedBox(height: 16),
+              const Divider(),
+              const SizedBox(height: 16),
+              Text(
+                'Original Message',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.onSurface.withOpacity(0.5),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceVariant.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: theme.colorScheme.onSurface.withOpacity(0.1),
+                  ),
+                ),
+                child: Text(
+                  transaction.rawMessage!,
                   style: TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    height: 1.4,
                   ),
                 ),
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceVariant.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: theme.colorScheme.onSurface.withOpacity(0.1),
-                    ),
-                  ),
-                  child: Text(
-                    transaction.rawMessage!,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: theme.colorScheme.onSurface.withOpacity(0.7),
-                      height: 1.4,
-                    ),
-                  ),
-                ),
-              ],
+              ),
+            ],
             ],
           ),
         ),

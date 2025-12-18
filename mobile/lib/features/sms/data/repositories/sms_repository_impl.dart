@@ -59,7 +59,7 @@ class SmsRepositoryImpl implements SmsRepository {
         final date = DateTime.fromMillisecondsSinceEpoch(dateMillis);
 
         print('\n📨 SMS #$messageIndex');
-        print('From: ${sender ?? address} (address: $address)');
+        print('From: ${sender} (address: $address)');
         print('Message: ${body}');
         print('-' * 80);
 

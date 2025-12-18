@@ -19,7 +19,6 @@ import '../../../simulations/presentation/pages/simulations_page.dart';
 import '../../../gamification/presentation/bloc/gamification_bloc.dart';
 import '../../../gamification/presentation/pages/gamification_page.dart';
 import '../bloc/auth_bloc.dart';
-import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 import 'login_page.dart';
 
@@ -33,8 +32,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late AnimationController _headerController;
   late AnimationController _cardsController;
-  late Animation<double> _headerAnimation;
-  late Animation<double> _cardsAnimation;
 
   @override
   void initState() {
@@ -48,14 +45,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 1200),
     );
 
-    _headerAnimation = CurvedAnimation(
-      parent: _headerController,
-      curve: Curves.easeOutCubic,
-    );
-    _cardsAnimation = CurvedAnimation(
-      parent: _cardsController,
-      curve: Curves.easeOutCubic,
-    );
 
     _headerController.forward();
     _cardsController.forward();
@@ -71,7 +60,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/app_pallette.dart';
 
 /// Loading state widget
 class LoadingState extends StatelessWidget {

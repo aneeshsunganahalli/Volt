@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/app_pallette.dart';
 
 /// Reusable Info Card component following the design system
 class InfoCard extends StatelessWidget {
